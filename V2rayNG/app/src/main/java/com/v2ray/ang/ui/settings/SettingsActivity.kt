@@ -89,7 +89,15 @@ class SettingsActivity : BaseComponentActivity() {
             viewModel = viewModel,
             onBackClick = { finish() },
             onModeHelpClicked = { Utils.openUri(this, AppConfig.APP_WIKI_MODE) },
-            onSystemVpnSettingsClicked = ::openSystemVpnSettings
+            onSystemVpnSettingsClicked = ::openSystemVpnSettings,
+            onAggregationClicked = {
+                startActivity(
+                    Intent(this, com.v2ray.ang.ui.aggregation.AggregationActivity::class.java)
+                )
+            },
+            onHotspotClicked = {
+                startActivity(Intent(this, com.v2ray.ang.ui.hotspot.HotspotActivity::class.java))
+            }
         )
     }
 }
@@ -100,12 +108,15 @@ fun SettingsScreen(
     viewModel: SettingsViewModel,
     onBackClick: () -> Unit,
     onModeHelpClicked: () -> Unit,
-    onSystemVpnSettingsClicked: () -> Unit
+    onSystemVpnSettingsClicked: () -> Unit,
+    onAggregationClicked: () -> Unit,
+    onHotspotClicked: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
     val systemVpnSettingsAvailable by viewModel.systemVpnSettingsAvailable.collectAsStateWithLifecycle()
     var uiSettingsExpanded by rememberSaveable { mutableStateOf(true) }
+    var networkSettingsExpanded by rememberSaveable { mutableStateOf(true) }
     var vpnSettingsExpanded by rememberSaveable { mutableStateOf(true) }
     var coreSettingsExpanded by rememberSaveable { mutableStateOf(true) }
     var muxSettingsExpanded by rememberSaveable { mutableStateOf(false) }
@@ -300,6 +311,26 @@ fun SettingsScreen(
                         uiModeNight = it
                         ThemeManager.setThemeMode(it)
                     }
+                )
+            }
+
+            CollapsiblePreferenceGroupHeader(
+                title = stringResource(R.string.settings_network),
+                expanded = networkSettingsExpanded,
+                onExpandedChange = { networkSettingsExpanded = it }
+            )
+            if (networkSettingsExpanded) {
+                SettingsMenuItem(
+                    icon = androidx.compose.ui.res.painterResource(R.drawable.ic_merge_24dp),
+                    title = stringResource(R.string.settings_aggregation),
+                    subtitle = stringResource(R.string.settings_aggregation_summary),
+                    onClick = onAggregationClicked
+                )
+                SettingsMenuItem(
+                    icon = androidx.compose.ui.res.painterResource(R.drawable.ic_hotspot_24dp),
+                    title = stringResource(R.string.settings_hotspot),
+                    subtitle = stringResource(R.string.settings_hotspot_summary),
+                    onClick = onHotspotClicked
                 )
             }
 

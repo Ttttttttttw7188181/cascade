@@ -26,7 +26,9 @@ import com.v2ray.ang.handler.SettingsChangeManager
 import com.v2ray.ang.handler.SettingsManager
 import com.v2ray.ang.handler.SubscriptionInfoParser
 import com.v2ray.ang.ui.AboutActivity
+import com.v2ray.ang.ui.aggregation.AggregationActivity
 import com.v2ray.ang.ui.backup.BackupActivity
+import com.v2ray.ang.ui.hotspot.HotspotActivity
 import com.v2ray.ang.ui.base.HelperBaseComponentActivity
 import com.v2ray.ang.ui.logcat.LogcatActivity
 import com.v2ray.ang.ui.perappproxy.PerAppProxyActivity
@@ -78,6 +80,7 @@ class MainActivity : HelperBaseComponentActivity() {
             val selectedProfileSaved = action == ProfileEditorResult.ACTION_SAVED &&
                     data.getStringExtra(ProfileEditorResult.EXTRA_GUID) == mainViewModel.uiState.value.selectedGuid
             mainViewModel.onAction(MainAction.RefreshGroups)
+            mainViewModel.refreshSelectedServerName()
             if (restartService || selectedProfileSaved) LauncherManager.restartService(this)
         }
 
@@ -148,6 +151,8 @@ class MainActivity : HelperBaseComponentActivity() {
             MainDestination.Subscriptions -> Intent(this, SubSettingActivity::class.java)
             MainDestination.PerAppProxy -> Intent(this, PerAppProxyActivity::class.java)
             MainDestination.Routing -> Intent(this, RoutingSettingActivity::class.java)
+            MainDestination.Aggregation -> Intent(this, AggregationActivity::class.java)
+            MainDestination.Hotspot -> Intent(this, HotspotActivity::class.java)
             MainDestination.UserAssets -> Intent(this, UserAssetActivity::class.java)
             MainDestination.Settings -> Intent(this, SettingsActivity::class.java)
             MainDestination.Logcat -> Intent(this, LogcatActivity::class.java)

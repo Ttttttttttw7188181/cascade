@@ -11,6 +11,7 @@ import com.v2ray.ang.dto.GroupMapItem
 import com.v2ray.ang.dto.LocateTarget
 import com.v2ray.ang.dto.RealPingResult
 import com.v2ray.ang.dto.TestServiceMessage
+import com.v2ray.ang.dto.TrafficMessage
 import com.v2ray.ang.dto.entities.ProfileItem
 import com.v2ray.ang.dto.entities.ServersCache
 import com.v2ray.ang.dto.entities.SubscriptionCache
@@ -18,7 +19,9 @@ import com.v2ray.ang.extension.delay
 import com.v2ray.ang.extension.isComplexType
 import com.v2ray.ang.extension.matchesPattern
 import com.v2ray.ang.extension.moveItem
+import com.v2ray.ang.handler.MmkvManager
 import com.v2ray.ang.handler.SubscriptionInfoParser
+import com.v2ray.ang.hotspot.ShizziController
 import com.v2ray.ang.ui.base.BaseViewModel
 import com.v2ray.ang.util.LogUtil
 import kotlinx.coroutines.CancellationException
@@ -87,6 +90,22 @@ class MainViewModel(
     )
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
+    // ---------- Live traffic ----------
+    private val _trafficState = MutableStateFlow(TrafficMessage())
+    val trafficState: StateFlow<TrafficMessage> = _trafficState.asStateFlow()
+
+    // ---------- Home extras ----------
+    private val _aggregationEnabled = MutableStateFlow(
+        MmkvManager.decodeSettingsBool(AppConfig.PREF_AGGREGATION_ENABLED, false)
+    )
+    val aggregationEnabled: StateFlow<Boolean> = _aggregationEnabled.asStateFlow()
+
+    private val _selectedServerName = MutableStateFlow<String?>(null)
+    val selectedServerName: StateFlow<String?> = _selectedServerName.asStateFlow()
+
+    private val _hotspotState = MutableStateFlow(ShizziController.state.value)
+    val hotspotState: StateFlow<ShizziController.State> = _hotspotState.asStateFlow()
+
     // ---------- Keyword filtering ----------
     @Volatile
     private var keywordFilter: String = ""
@@ -114,8 +133,39 @@ class MainViewModel(
 
     // ---------- Service events ----------
     init {
+        ShizziController.attach(application)
+        viewModelScope.launch {
+            ShizziController.state.collect { _hotspotState.value = it }
+        }
+        refreshSelectedServerName()
         collectServiceEvents()
         setupGroupTab()
+    }
+
+    /** Refreshes settings that live outside the group cache when the home screen returns. */
+    fun onScreenResumed() {
+        _aggregationEnabled.value =
+            MmkvManager.decodeSettingsBool(AppConfig.PREF_AGGREGATION_ENABLED, false)
+        ShizziController.refresh()
+        refreshSelectedServerName()
+    }
+
+    fun refreshSelectedServerName() {
+        val guid = _uiState.value.selectedGuid?.takeIf { it.isNotEmpty() }
+        if (guid == null) {
+            _selectedServerName.value = null
+            return
+        }
+        viewModelScope.launch(ioDispatcher) {
+            val name = dataSource.decodeServerConfig(guid)?.let { profile ->
+                profile.remarks.takeIf { it.isNotBlank() } ?: profile.server
+            }
+            _selectedServerName.value = name
+        }
+    }
+
+    private fun setHotspotEnabled(enabled: Boolean) {
+        if (enabled) ShizziController.start() else ShizziController.stop()
     }
 
     private fun collectServiceEvents() {
@@ -130,6 +180,9 @@ class MainViewModel(
         when (event) {
             MainServiceEvent.StateRunning -> updateRunningState(true, clearTestingText = false)
             MainServiceEvent.StateNotRunning -> updateRunningState(false, clearTestingText = false)
+            is MainServiceEvent.Traffic -> {
+                _trafficState.value = event.sample
+            }
             MainServiceEvent.StateStartSuccess -> {
                 toastSuccess(R.string.toast_services_success)
                 updateRunningState(true)
@@ -293,6 +346,8 @@ class MainViewModel(
             is MainAction.Search -> filterConfig(action.query)
             is MainAction.ImportBatchConfig -> importBatchConfig(action.configText)
             MainAction.LocateHandled -> consumeLocateTarget()
+            MainAction.RefreshHome -> onScreenResumed()
+            is MainAction.SetHotspotEnabled -> setHotspotEnabled(action.enabled)
             is MainAction.ShareQRCode -> {
                 val bitmap = dataSource.share2QRCode(action.guid)
                 _uiState.update { it.copy(shareQRCodeBitmap = bitmap) }
@@ -779,10 +834,12 @@ class MainViewModel(
     fun updateSelectedGuid(guid: String) {
         dataSource.setSelectServer(guid)
         _uiState.update { it.copy(selectedGuid = guid) }
+        refreshSelectedServerName()
     }
 
     fun refreshSelectedGuid() {
         _uiState.update { it.copy(selectedGuid = dataSource.getSelectServer()) }
+        refreshSelectedServerName()
     }
 
     fun removeServerAndRefresh(guid: String) {
@@ -931,6 +988,9 @@ class MainViewModel(
     // ---------- Running state ----------
     private fun updateRunningState(running: Boolean, clearTestingText: Boolean = true) {
         if (!running || clearTestingText) testRequests.invalidateCurrent()
+        if (!running) {
+            _trafficState.value = TrafficMessage()
+        }
         _uiState.update { state ->
             state.copy(
                 isRunning = running,
@@ -942,6 +1002,7 @@ class MainViewModel(
     }
 
     override fun onCleared() {
+        ShizziController.detach()
         setupGroupJob?.cancel()
         preloadJob?.cancel()
         selectedGroupLoadJob?.cancel()

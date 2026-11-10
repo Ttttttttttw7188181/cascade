@@ -1,5 +1,6 @@
 package com.v2ray.ang.ui.main
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,9 +10,11 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,12 +27,17 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.v2ray.ang.R
 import com.v2ray.ang.dto.entities.ProfileItem
-import com.v2ray.ang.ui.compose.LocalDarkTheme
 import com.v2ray.ang.ui.compose.QRCodeDialog
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
@@ -49,8 +57,20 @@ fun MainScreen(
     val doubleColumnDisplay = uiState.doubleColumnDisplay
     val confirmRemove = uiState.confirmRemove
     val shareQRCodeBitmap = uiState.shareQRCodeBitmap
+    val traffic by mainViewModel.trafficState.collectAsStateWithLifecycle()
+    val hotspot by mainViewModel.hotspotState.collectAsStateWithLifecycle()
+    val aggregationEnabled by mainViewModel.aggregationEnabled.collectAsStateWithLifecycle()
+    val serverName by mainViewModel.selectedServerName.collectAsStateWithLifecycle()
 
-    val isDarkTheme = LocalDarkTheme.current
+    val detailText = if (
+        uiState.status is MainStatus.ConnectionTest ||
+        uiState.status is MainStatus.TestProgress
+    ) displayText else null
+
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        onAction(MainAction.RefreshHome)
+    }
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var showSearch by remember { mutableStateOf(false) }
@@ -184,24 +204,49 @@ fun MainScreen(
                     }
                 )
             },
-            bottomBar = {
-                MainBottomBar(
-                    displayText = displayText,
-                    isRunning = isRunning,
-                    isDarkTheme = isDarkTheme,
-                    onAction = onAction
-                )
-            },
             floatingActionButton = {},
         ) { innerPadding ->
             val layoutDirection = LocalLayoutDirection.current
 
-            if (groups.isNotEmpty()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                MainHomeHeader(
+                        isRunning = isRunning,
+                        serverName = serverName,
+                        traffic = traffic,
+                        detailText = detailText,
+                        aggregationEnabled = aggregationEnabled,
+                        hotspot = hotspot,
+                        onToggle = { onAction(MainAction.ToggleService) },
+                        onAggregationClick = { onNavigate(MainDestination.Aggregation) },
+                        onHotspotClick = { onNavigate(MainDestination.Hotspot) },
+                        onHotspotToggle = { enabled ->
+                            if (hotspot.canControl) {
+                                onAction(MainAction.SetHotspotEnabled(enabled))
+                            } else {
+                                onNavigate(MainDestination.Hotspot)
+                            }
+                        },
+                        onSubscriptionsClick = { onNavigate(MainDestination.Subscriptions) },
+                    )
+                if (groups.isEmpty()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.home_empty),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
                     if (groups.size > 1) {
                         GroupTabBar(
                             groups = groups,
@@ -252,7 +297,7 @@ fun MainScreen(
                                 start = 0.dp,
                                 top = 0.dp,
                                 end = 0.dp,
-                                bottom = 80.dp
+                                bottom = 16.dp
                             )
                         )
                     }

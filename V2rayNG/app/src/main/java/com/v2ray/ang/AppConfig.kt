@@ -90,6 +90,24 @@ object AppConfig {
     const val PREF_AUTO_SORT_AFTER_TEST = "pref_auto_sort_after_test"
     const val PREF_REAL_PING_CONCURRENCY = "pref_real_ping_concurrency"
 
+    /** Aggregation through an external SOCKS5 balancer. */
+    const val PREF_AGGREGATION_ENABLED = "pref_aggregation_enabled"
+    const val PREF_AGGREGATION_HOST = "pref_aggregation_host"
+    const val PREF_AGGREGATION_PORT = "pref_aggregation_port"
+    const val PREF_AGGREGATION_USERNAME = "pref_aggregation_username"
+    const val PREF_AGGREGATION_PASSWORD = "pref_aggregation_password"
+    const val AGGREGATION_OUTBOUND_TAG = "aggregation-socks"
+
+    /** Shizzi automation bridge (https://github.com/carlelieser/shizzi). */
+    const val PREF_SHIZZI_TOKEN = "pref_shizzi_token"
+    const val SHIZZI_PACKAGE = "dev.shizzi"
+    const val SHIZZI_AUTOMATION_RECEIVER = "dev.shizzi.AutomationReceiver"
+    const val SHIZZI_ACTION_START = "dev.shizzi.action.START"
+    const val SHIZZI_ACTION_STOP = "dev.shizzi.action.STOP"
+    const val SHIZZI_ACTION_TOGGLE = "dev.shizzi.action.TOGGLE"
+    const val SHIZZI_ACTION_QUERY_STATUS = "dev.shizzi.action.QUERY_STATUS"
+    const val SHIZZI_ACTION_SESSION_RESULT = "dev.shizzi.action.SESSION_RESULT"
+
     /** Cache keys. */
     const val CACHE_SUBSCRIPTION_ID = "cache_subscription_id"
 
@@ -127,12 +145,21 @@ object AppConfig {
     const val GITHUB_RAW_URL = "https://raw.githubusercontent.com"
     const val GITHUB_DOWNLOAD_URL = "$GITHUB_URL/%s/releases/latest/download"
     const val ANDROID_PACKAGE_NAME_LIST_URL = "$GITHUB_RAW_URL/2dust/androidpackagenamelist/master/proxy.txt"
-    const val APP_URL = "$GITHUB_URL/2dust/v2rayNG"
-    const val APP_API_URL = "https://api.github.com/repos/2dust/v2rayNG/releases"
+    const val CASCADE_REPO = "Ttttttttttw7188181/cascade"
+    const val APP_URL = "$GITHUB_URL/$CASCADE_REPO"
+    const val APP_API_URL = "https://api.github.com/repos/$CASCADE_REPO/releases"
     const val APP_ISSUES_URL = "$APP_URL/issues"
-    const val APP_WIKI_MODE = "$APP_URL/wiki/Mode"
-    const val APP_PRIVACY_POLICY = "$GITHUB_RAW_URL/2dust/v2rayNG/master/CR.md"
-    const val TG_CHANNEL_URL = "https://t.me/github_2dust"
+    const val APP_WIKI_MODE = "$APP_URL#features"
+    const val APP_PRIVACY_POLICY = "$APP_URL/blob/main/PRIVACY.md"
+    const val TG_CHANNEL_URL = APP_URL
+    const val NET_MERGE_URL = "$GITHUB_URL/net-merge/android"
+    const val NET_MERGE_ENGINE_URL = "$GITHUB_URL/net-merge/net-merge"
+    const val SHIZZI_URL = "$GITHUB_URL/carlelieser/shizzi"
+    const val SHIZZI_RELEASES_URL = "$SHIZZI_URL/releases/latest"
+    const val SHIZUKU_URL = "https://shizuku.rikka.app/"
+    const val V2RAYNG_URL = "$GITHUB_URL/2dust/v2rayNG"
+    const val XRAY_URL = "$GITHUB_URL/XTLS/Xray-core"
+    const val VPNHOTSPOT_URL = "$GITHUB_URL/Mygod/VPNHotspot"
     const val DELAY_TEST_URL = "https://www.gstatic.com/generate_204"
     const val DELAY_TEST_URL2 = "https://www.google.com/generate_204"
     const val OBSERVATORY_LEAST_PING_INTERVAL = "3m"
@@ -183,6 +210,7 @@ object AppConfig {
     const val MSG_STATE_START = 3
     const val MSG_STATE_START_SUCCESS = 31
     const val MSG_STATE_START_FAILURE = 32
+    const val MSG_STATE_TRAFFIC = 13
     const val MSG_STATE_STOP = 4
     const val MSG_STATE_STOP_SUCCESS = 41
     const val MSG_STATE_RESTART = 5

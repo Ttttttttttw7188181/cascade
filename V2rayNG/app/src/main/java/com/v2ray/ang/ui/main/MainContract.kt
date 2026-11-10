@@ -69,4 +69,6 @@ sealed interface MainAction {
     data class ImportBatchConfig(val configText: String) : MainAction
 
     data object LocateHandled : MainAction
+    data object RefreshHome : MainAction
+    data class SetHotspotEnabled(val enabled: Boolean) : MainAction
 }

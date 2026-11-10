@@ -38,6 +38,8 @@ enum class MainDestination(@DrawableRes val iconRes: Int, @StringRes val labelRe
     Subscriptions(R.drawable.ic_subscriptions_24dp, R.string.title_sub_setting),
     PerAppProxy(R.drawable.ic_per_apps_24dp, R.string.per_app_proxy_settings),
     Routing(R.drawable.ic_routing_24dp, R.string.routing_settings_title),
+    Aggregation(R.drawable.ic_merge_24dp, R.string.settings_aggregation),
+    Hotspot(R.drawable.ic_hotspot_24dp, R.string.settings_hotspot),
     UserAssets(R.drawable.ic_file_24dp, R.string.title_user_asset_setting),
     Settings(R.drawable.ic_settings_24dp, R.string.title_settings),
     Logcat(R.drawable.ic_logcat_24dp, R.string.title_logcat),
@@ -49,6 +51,8 @@ private val primaryDrawerItems = listOf(
     MainDestination.Subscriptions,
     MainDestination.PerAppProxy,
     MainDestination.Routing,
+    MainDestination.Aggregation,
+    MainDestination.Hotspot,
     MainDestination.UserAssets,
     MainDestination.Settings
 )

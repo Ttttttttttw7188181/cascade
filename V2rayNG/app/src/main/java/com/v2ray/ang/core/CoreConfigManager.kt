@@ -230,9 +230,67 @@ object CoreConfigManager {
 
         applyObservability(v2rayConfig, balancerStrategies)
         applySpeedDisabled(v2rayConfig)
+        applyAggregationProxy(v2rayConfig)
         resolveOutboundDomainsToHosts(v2rayConfig)
 
         return v2rayConfig
+    }
+
+    /**
+     * Chains the terminal proxy outbounds through a user-provided SOCKS5 balancer.
+     *
+     * The balancer (for example net-merge or NetCombine) owns the multi-network scheduling and
+     * listens locally. Only proxied traffic is affected; direct and blocked rules keep their path.
+     */
+    private fun applyAggregationProxy(v2rayConfig: V2rayConfig) {
+        if (!MmkvManager.decodeSettingsBool(AppConfig.PREF_AGGREGATION_ENABLED, false)) return
+
+        val host = MmkvManager.decodeSettingsString(
+            AppConfig.PREF_AGGREGATION_HOST,
+            "127.0.0.1"
+        )?.trim().orEmpty()
+        val port = MmkvManager.decodeSettingsString(
+            AppConfig.PREF_AGGREGATION_PORT,
+            "1080"
+        )?.toIntOrNull() ?: 0
+        if (host.isEmpty() || port !in 1..65535) return
+        if (v2rayConfig.outbounds.any { it.tag == AppConfig.AGGREGATION_OUTBOUND_TAG }) return
+
+        val settings = V2rayConfig.OutboundBean.OutSettingsBean(address = host, port = port)
+        val username = MmkvManager.decodeSettingsString(
+            AppConfig.PREF_AGGREGATION_USERNAME,
+            ""
+        ).orEmpty()
+        if (username.isNotEmpty()) {
+            settings.user = username
+            settings.pass = MmkvManager.decodeSettingsString(
+                AppConfig.PREF_AGGREGATION_PASSWORD,
+                ""
+            ).orEmpty()
+        }
+
+        v2rayConfig.outbounds.forEach { outbound ->
+            if (outbound.tag == AppConfig.AGGREGATION_OUTBOUND_TAG) return@forEach
+            if (outbound.tag == AppConfig.TAG_DIRECT || outbound.tag == AppConfig.TAG_BLOCKED) return@forEach
+            val isDirectLike = outbound.protocol == AppConfig.PROTOCOL_FREEDOM ||
+                    outbound.protocol == "blackhole" ||
+                    outbound.protocol == "dns"
+            // The fragment outbound is a freedom dialer that only participates in a proxy chain.
+            if (isDirectLike && outbound.tag != AppConfig.TAG_FRAGMENT) return@forEach
+            val sockopt = outbound.ensureSockopt()
+            if (sockopt.dialerProxy.isNullOrBlank()) {
+                sockopt.dialerProxy = AppConfig.AGGREGATION_OUTBOUND_TAG
+            }
+        }
+
+        v2rayConfig.outbounds.add(
+            V2rayConfig.OutboundBean(
+                tag = AppConfig.AGGREGATION_OUTBOUND_TAG,
+                protocol = "socks",
+                settings = settings,
+                mux = null,
+            )
+        )
     }
 
     /**

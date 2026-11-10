@@ -2,10 +2,12 @@ package com.v2ray.ang.ui.main
 
 import com.v2ray.ang.dto.ConnectionTestResult
 import com.v2ray.ang.dto.RealPingResult
+import com.v2ray.ang.dto.TrafficMessage
 
 sealed class MainServiceEvent {
     data object StateRunning : MainServiceEvent()
     data object StateNotRunning : MainServiceEvent()
+    data class Traffic(val sample: TrafficMessage) : MainServiceEvent()
     data object StateStartSuccess : MainServiceEvent()
     data class StateStartFailure(val message: String? = null) : MainServiceEvent()
     data object StateStopSuccess : MainServiceEvent()

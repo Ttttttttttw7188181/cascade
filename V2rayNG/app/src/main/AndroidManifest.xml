@@ -23,6 +23,11 @@
         android:name="android.hardware.touchscreen"
         android:required="false" />
 
+    <queries>
+        <package android:name="dev.shizzi" />
+        <package android:name="moe.shizuku.privileged.api" />
+    </queries>
+
     <!-- https://developer.android.com/about/versions/11/privacy/package-visibility -->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
@@ -125,6 +130,17 @@
             android:windowSoftInputMode="stateUnchanged|adjustResize" />
         <activity
             android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.aggregation.AggregationActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.hotspot.HotspotActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.CreditsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.perappproxy.PerAppProxyActivity"

@@ -50,6 +50,9 @@ class AboutActivity : BaseComponentActivity() {
             onBackClick = { finish() },
             onTranslatorsClick = {
                 startActivity(Intent(this, TranslatorsActivity::class.java))
+            },
+            onCreditsClick = {
+                startActivity(Intent(this, CreditsActivity::class.java))
             }
         )
     }
@@ -58,7 +61,8 @@ class AboutActivity : BaseComponentActivity() {
 @Composable
 fun AboutScreen(
     onBackClick: () -> Unit,
-    onTranslatorsClick: () -> Unit
+    onTranslatorsClick: () -> Unit,
+    onCreditsClick: () -> Unit
 ) {
     val context = LocalContext.current
     var showOssDialog by remember { mutableStateOf(false) }
@@ -93,6 +97,11 @@ fun AboutScreen(
                 onClick = { showOssDialog = true }
             )
             SettingsMenuItem(
+                icon = painterResource(R.drawable.ic_about_24dp),
+                title = stringResource(R.string.about_credits),
+                onClick = onCreditsClick
+            )
+            SettingsMenuItem(
                 icon = painterResource(R.drawable.ic_translate_24dp),
                 title = stringResource(R.string.title_translators),
                 onClick = onTranslatorsClick
@@ -101,11 +110,6 @@ fun AboutScreen(
                 icon = painterResource(R.drawable.ic_feedback_24dp),
                 title = stringResource(R.string.title_pref_feedback),
                 onClick = { Utils.openUri(context, AppConfig.APP_ISSUES_URL) }
-            )
-            SettingsMenuItem(
-                icon = painterResource(R.drawable.ic_telegram_24dp),
-                title = stringResource(R.string.title_tg_channel),
-                onClick = { Utils.openUri(context, AppConfig.TG_CHANNEL_URL) }
             )
             SettingsMenuItem(
                 icon = painterResource(R.drawable.ic_privacy_24dp),

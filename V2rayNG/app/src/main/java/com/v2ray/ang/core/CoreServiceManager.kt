@@ -57,6 +57,16 @@ object CoreServiceManager {
     @Volatile
     private var isReloading = false
 
+    /**
+     * Number of foreground UI clients registered for live status. The daemon runs in its own
+     * process, so the main screen registers through [AppConfig.MSG_REGISTER_CLIENT] instead of
+     * touching this object directly.
+     */
+    @Volatile
+    private var uiClientCount = 0
+
+    fun hasUiClient(): Boolean = uiClientCount > 0
+
     /** Tun descriptor the core was started with, null in the proxy only and root run modes. */
     private var currentVpnInterface: ParcelFileDescriptor? = null
 
@@ -461,15 +471,17 @@ object CoreServiceManager {
             val serviceControl = serviceControl?.get() ?: return
             when (intent?.getIntExtra("key", 0)) {
                 AppConfig.MSG_REGISTER_CLIENT -> {
+                    uiClientCount++
                     if (isRunning()) {
                         MessageHelper.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_RUNNING, "")
+                        NotificationManager.startSpeedNotification()
                     } else {
                         MessageHelper.sendMsg2UI(serviceControl.getService(), AppConfig.MSG_STATE_NOT_RUNNING, "")
                     }
                 }
 
                 AppConfig.MSG_UNREGISTER_CLIENT -> {
-                    // nothing to do
+                    uiClientCount = (uiClientCount - 1).coerceAtLeast(0)
                 }
 
                 AppConfig.MSG_STATE_START -> {

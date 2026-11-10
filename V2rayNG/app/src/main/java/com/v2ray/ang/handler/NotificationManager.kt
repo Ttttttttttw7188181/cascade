@@ -13,9 +13,11 @@ import androidx.core.app.NotificationCompat
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.R
 import com.v2ray.ang.core.CoreServiceManager
+import com.v2ray.ang.dto.TrafficMessage
 import com.v2ray.ang.dto.entities.ProfileItem
 import com.v2ray.ang.extension.delay
 import com.v2ray.ang.extension.toSpeedString
+import com.v2ray.ang.helper.MessageHelper
 import com.v2ray.ang.helper.NotificationHelper
 import com.v2ray.ang.ui.main.MainActivity
 import com.v2ray.ang.util.LogUtil
@@ -39,15 +41,22 @@ object NotificationManager {
     private var speedNotificationJob: Job? = null
     private var mNotificationManager: NotificationManager? = null
 
+    // Session counters shared by the notification and the live main-screen card.
+    private var sessionStartTime = 0L
+    private var sessionUp = 0L
+    private var sessionDown = 0L
+
     /**
-     * Starts the speed notification.
-     * @param currentConfig The current profile configuration.
+     * Starts the traffic monitor. It feeds both the speed notification (when enabled) and the
+     * live traffic card in the main screen (while a UI client is registered).
      */
     fun startSpeedNotification() {
-        if (MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) != true) return
         if (speedNotificationJob != null || CoreServiceManager.isRunning() == false) return
 
         var lastZeroSpeed = false
+        sessionStartTime = System.currentTimeMillis()
+        sessionUp = 0L
+        sessionDown = 0L
 
         speedNotificationJob = CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
@@ -230,6 +239,13 @@ object NotificationManager {
     private fun updateSpeedNotificationOnce(lastZeroSpeed: Boolean): Boolean {
         val queryTime = System.currentTimeMillis()
         val sinceLastQueryIn = (queryTime - lastQueryTime)
+        val notifyEnabled = MmkvManager.decodeSettingsBool(AppConfig.PREF_SPEED_ENABLED) == true
+
+        // Nobody is displaying traffic: keep the job idle instead of resetting core counters.
+        if (!notifyEnabled && !CoreServiceManager.hasUiClient()) {
+            lastQueryTime = queryTime
+            return lastZeroSpeed
+        }
 
         // If the query interval is too short, skip this round to avoid excessive CPU usage
         if (sinceLastQueryIn < QUERY_INTERVAL_MS) {
@@ -266,7 +282,28 @@ object NotificationManager {
         val proxyTotal = proxyUplink + proxyDownlink
         val directTotal = directUplink + directDownlink
         val zeroSpeed = proxyTotal + directTotal == 0L
-        if (!zeroSpeed || !lastZeroSpeed) {
+
+        sessionUp += proxyUplink
+        sessionDown += proxyDownlink
+        if (CoreServiceManager.hasUiClient()) {
+            getService()?.let { service ->
+                val elapsed = if (sessionStartTime == 0L) 0L
+                else ((queryTime - sessionStartTime) / 1000L).coerceAtLeast(0L)
+                MessageHelper.sendMsg2UI(
+                    service,
+                    AppConfig.MSG_STATE_TRAFFIC,
+                    TrafficMessage(
+                        upSpeed = (proxyUplink / sinceLastQueryInSeconds).toLong(),
+                        downSpeed = (proxyDownlink / sinceLastQueryInSeconds).toLong(),
+                        totalUp = sessionUp,
+                        totalDown = sessionDown,
+                        elapsedSeconds = elapsed,
+                    )
+                )
+            }
+        }
+
+        if (notifyEnabled && (!zeroSpeed || !lastZeroSpeed)) {
             val text = StringBuilder()
             appendSpeedString(
                 text, AppConfig.TAG_PROXY,
