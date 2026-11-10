@@ -1,6 +1,7 @@
 package com.v2ray.ang.ui.aggregation
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.handler.MmkvManager
 import com.v2ray.ang.handler.SettingsChangeManager

@@ -1,6 +1,7 @@
 package com.v2ray.ang.ui.hotspot
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import com.v2ray.ang.hotspot.ShizziController
 import com.v2ray.ang.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
