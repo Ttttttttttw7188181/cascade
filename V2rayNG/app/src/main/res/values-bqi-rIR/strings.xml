@@ -627,6 +627,7 @@
     <string name="hotspot_error_token">ابتدا نشانه خودکارسازی Shizzi را وارد کنید</string>
     <string name="hotspot_error_install">برای اشتراک هات‌اسپات Shizzi را نصب کنید</string>
     <string name="hotspot_error_refused">Shizzi فرمان را رد کرد. نشانه و تنظیمات خودکارسازی را بررسی کنید.</string>
+    <string name="hotspot_error_timeout">Shizzi پاسخ نداد. بررسی کنید خودکارسازی روشن و فعالیت پس‌زمینه مجاز باشد.</string>
     <string name="hotspot_credits">Shizzi ساخته carlelieser. Shizuku ساخته RikkaApps. Cascade کد آن‌ها را شامل نمی‌شود.</string>
     <string name="credits_title">نویسندگان و قدردانی‌ها</string>
     <string name="credits_intro">Cascade بر کار پروژه‌های متن‌باز استوار است. از نویسندگان و همکاران سپاسگزاریم.</string>
@@ -639,4 +640,17 @@
     <string name="settings_hotspot">هات‌اسپات با VPN</string>
     <string name="settings_hotspot_summary">یکپارچه‌سازی Shizzi + Shizuku</string>
     <string name="about_credits">نویسندگان و قدردانی‌ها</string>
+    <string name="credits_desc_xray">هسته پروکسی که تونل را حمل می‌کند.</string>
+    <string name="credits_desc_v2rayng">برنامه Android و پایه رابطی که این پروژه از آن آغاز شد.</string>
+    <string name="credits_desc_libxray">AAR کتابخانه libv2ray برای اجرای Xray در برنامه.</string>
+    <string name="credits_desc_hev">تونل TUN/SOCKS5 فضای کاربر که در حالت HEV استفاده می‌شود.</string>
+    <string name="credits_desc_netmerge">توازن چندشبکه‌ای بر پایه اتصال. صفحه تجمیع از این ایده پیروی می‌کند؛ موتور دسکتاپ آن همراه برنامه نیست.</string>
+    <string name="credits_desc_netmerge_android">مرجع صفحه داده Android برای توازن وای‌فای + داده همراه. هیچ کدی شامل نشده است.</string>
+    <string name="credits_desc_shizzi">اشتراک هات‌اسپات بدون روت از طریق Shizuku. Cascade فقط از طریق پخش خودکارسازی عمومی آن را کنترل می‌کند؛ کدی کپی نشده است.</string>
+    <string name="credits_desc_shizuku">پل API ویژه‌ای که Shizzi استفاده می‌کند.</string>
+    <string name="credits_desc_vpnhotspot">پیشینه اشتراک اتصال VPN از طریق هات‌اسپات.</string>
+    <string name="credits_desc_hotspotxray">الهام‌بخش دروازه هات‌اسپات بدون روت. وابسته به Cascade نیست و کدی استفاده نشده.</string>
+    <string name="credits_desc_compose">جعبه‌ابزار رابط کاربری پشت برنامه.</string>
+    <string name="credits_desc_incy">الهام بصری برای یک کلاینت VPN مدرن Material You. Cascade مستقل است و از کد، دارایی یا برند INCY استفاده نمی‌کند.</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>

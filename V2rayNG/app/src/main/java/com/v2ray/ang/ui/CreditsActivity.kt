@@ -1,6 +1,6 @@
 package com.v2ray.ang.ui
 
-import android.os.Bundle
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -40,93 +40,93 @@ private data class CreditEntry(
     val name: String,
     val author: String,
     val license: String?,
-    val description: String,
+    @StringRes val description: Int,
     val url: String,
 )
 
 private val credits = listOf(
     CreditEntry(
         name = "Xray-core",
-        author = "XTLS and contributors",
+        author = "XTLS",
         license = "MPL-2.0",
-        description = "The proxy core that carries the tunnel.",
+        description = R.string.credits_desc_xray,
         url = AppConfig.XRAY_URL,
     ),
     CreditEntry(
         name = "v2rayNG",
-        author = "2dust and contributors",
+        author = "2dust",
         license = "GPL-3.0",
-        description = "The Android client and UI foundation this project started from.",
+        description = R.string.credits_desc_v2rayng,
         url = AppConfig.V2RAYNG_URL,
     ),
     CreditEntry(
         name = "AndroidLibXrayLite",
-        author = "2dust and contributors",
+        author = "2dust",
         license = "GPL-3.0",
-        description = "The libv2ray AAR used to run Xray inside the app.",
+        description = R.string.credits_desc_libxray,
         url = "${AppConfig.GITHUB_URL}/2dust/AndroidLibXrayLite",
     ),
     CreditEntry(
         name = "HEV Socks5 Tunnel",
-        author = "heiher and contributors",
+        author = "heiher",
         license = "MIT",
-        description = "The userspace TUN/SOCKS5 tunnel used by the HEV mode.",
+        description = R.string.credits_desc_hev,
         url = "${AppConfig.GITHUB_URL}/heiher/hev-socks5-tunnel",
     ),
     CreditEntry(
         name = "net-merge",
-        author = "Rohit Mahto and net-merge contributors",
+        author = "Rohit Mahto",
         license = "MIT",
-        description = "Per-connection multi-network balancing. The aggregation screen follows its concept; its desktop engine is not bundled.",
+        description = R.string.credits_desc_netmerge,
         url = AppConfig.NET_MERGE_ENGINE_URL,
     ),
     CreditEntry(
         name = "netmerge-android",
         author = "ziyadshafeek",
         license = null,
-        description = "Reference Android data plane for Wi-Fi + mobile balancing. No code is included.",
+        description = R.string.credits_desc_netmerge_android,
         url = AppConfig.NET_MERGE_URL,
     ),
     CreditEntry(
         name = "Shizzi",
         author = "carlelieser",
         license = null,
-        description = "Rootless hotspot sharing through Shizuku. Cascade controls it only through the public automation broadcasts; no code is copied.",
+        description = R.string.credits_desc_shizzi,
         url = AppConfig.SHIZZI_URL,
     ),
     CreditEntry(
         name = "Shizuku",
         author = "RikkaApps",
         license = "Apache-2.0",
-        description = "The privileged API bridge used by Shizzi.",
+        description = R.string.credits_desc_shizuku,
         url = AppConfig.SHIZUKU_URL,
     ),
     CreditEntry(
         name = "VPN Hotspot",
         author = "Mygod and contributors",
         license = "Apache-2.0",
-        description = "Prior art for sharing a VPN connection over a hotspot.",
+        description = R.string.credits_desc_vpnhotspot,
         url = AppConfig.VPNHOTSPOT_URL,
     ),
     CreditEntry(
         name = "HotspotXray",
         author = "shayanmahster",
         license = "Proprietary",
-        description = "Inspiration for a rootless hotspot gateway. It is not affiliated with Cascade and no code is used.",
+        description = R.string.credits_desc_hotspotxray,
         url = "${AppConfig.GITHUB_URL}/shayanmahster/HotspotXray",
     ),
     CreditEntry(
         name = "Jetpack Compose and Material 3",
-        author = "Google and the Android Open Source Project",
+        author = "Google / AOSP",
         license = "Apache-2.0",
-        description = "The UI toolkit behind the interface.",
+        description = R.string.credits_desc_compose,
         url = "https://developer.android.com/jetpack/compose",
     ),
     CreditEntry(
         name = "INCY",
         author = "itdev",
         license = "Proprietary",
-        description = "Visual inspiration for a modern Material You VPN client. Cascade is independent and uses no INCY code, assets or branding.",
+        description = R.string.credits_desc_incy,
         url = "https://incy.ac",
     ),
 )
@@ -194,7 +194,7 @@ private fun CreditCard(entry: CreditEntry, onClick: () -> Unit) {
             )
             Spacer(Modifier.height(6.dp))
             Text(
-                text = entry.description,
+                text = stringResource(entry.description),
                 style = MaterialTheme.typography.bodySmall
             )
             if (entry.license != null) {

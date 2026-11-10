@@ -625,6 +625,7 @@
     <string name="hotspot_error_token">請先輸入 Shizzi 的自動化權杖</string>
     <string name="hotspot_error_install">安裝 Shizzi 才能使用熱點分享</string>
     <string name="hotspot_error_refused">Shizzi 拒絕了命令。請檢查權杖和自動化設定。</string>
+    <string name="hotspot_error_timeout">Shizzi 沒有回應。請檢查自動化已啟用並允許背景活動。</string>
     <string name="hotspot_credits">Shizzi 作者 carlelieser。Shizuku 作者 RikkaApps。Cascade 不包含它們的程式碼。</string>
     <string name="credits_title">作者與致謝</string>
     <string name="credits_intro">Cascade 建立在開源專案之上。感謝所有作者和貢獻者。</string>
@@ -637,4 +638,17 @@
     <string name="settings_hotspot">含 VPN 的熱點</string>
     <string name="settings_hotspot_summary">Shizzi + Shizuku 整合</string>
     <string name="about_credits">作者與致謝</string>
+    <string name="credits_desc_xray">承載通道的代理核心。</string>
+    <string name="credits_desc_v2rayng">本專案起步所基於的 Android 用戶端與介面基礎。</string>
+    <string name="credits_desc_libxray">用於在應用程式內執行 Xray 的 libv2ray AAR。</string>
+    <string name="credits_desc_hev">HEV 模式使用的使用者空間 TUN/SOCKS5 通道。</string>
+    <string name="credits_desc_netmerge">依連線的多網路平衡。聚合介面沿用其概念；未捆綁其桌面引擎。</string>
+    <string name="credits_desc_netmerge_android">Wi-Fi + 行動數據平衡的 Android 資料平面參考。未包含任何程式碼。</string>
+    <string name="credits_desc_shizzi">透過 Shizuku 實現免 root 的熱點分享。Cascade 僅透過公開自動化廣播控制它；未複製程式碼。</string>
+    <string name="credits_desc_shizuku">Shizzi 使用的特權 API 橋接。</string>
+    <string name="credits_desc_vpnhotspot">透過熱點分享 VPN 連線的先行實作。</string>
+    <string name="credits_desc_hotspotxray">免 root 熱點閘道的靈感來源。它與 Cascade 無關，未使用其程式碼。</string>
+    <string name="credits_desc_compose">介面背後的 UI 工具包。</string>
+    <string name="credits_desc_incy">現代 Material You VPN 用戶端的視覺靈感。Cascade 獨立開發，不使用 INCY 的程式碼、資源或品牌。</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>

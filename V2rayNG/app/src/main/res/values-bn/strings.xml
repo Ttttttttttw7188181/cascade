@@ -627,6 +627,7 @@
     <string name="hotspot_error_token">প্রথমে Shizzi অটোমেশন টোকেন লিখুন</string>
     <string name="hotspot_error_install">হটস্পট শেয়ারিংয়ের জন্য Shizzi ইনস্টল করুন</string>
     <string name="hotspot_error_refused">Shizzi কমান্ড প্রত্যাখ্যান করেছে। টোকেন ও অটোমেশন সেটিংস পরীক্ষা করুন।</string>
+    <string name="hotspot_error_timeout">Shizzi সাড়া দেয়নি। অটোমেশন চালু এবং ব্যাকগ্রাউন্ড কার্যকলাপ অনুমোদিত কিনা দেখুন।</string>
     <string name="hotspot_credits">Shizzi — carlelieser। Shizuku — RikkaApps। Cascade তাদের কোড অন্তর্ভুক্ত করে না।</string>
     <string name="credits_title">লেখক ও কৃতজ্ঞতা</string>
     <string name="credits_intro">Cascade ওপেন সোর্স প্রকল্পের কাজের উপর দাঁড়িয়ে আছে। লেখক ও অবদানকারীদের ধন্যবাদ।</string>
@@ -639,4 +640,17 @@
     <string name="settings_hotspot">VPN সহ হটস্পট</string>
     <string name="settings_hotspot_summary">Shizzi + Shizuku ইন্টিগ্রেশন</string>
     <string name="about_credits">লেখক ও কৃতজ্ঞতা</string>
+    <string name="credits_desc_xray">টানেল বহনকারী প্রক্সি কোর।</string>
+    <string name="credits_desc_v2rayng">এই প্রকল্প যে Android অ্যাপ ও ইন্টারফেস ভিত্তি থেকে শুরু হয়েছিল।</string>
+    <string name="credits_desc_libxray">অ্যাপের ভেতরে Xray চালানোর libv2ray AAR।</string>
+    <string name="credits_desc_hev">HEV মোডে ব্যবহৃত ইউজারস্পেস TUN/SOCKS5 টানেল।</string>
+    <string name="credits_desc_netmerge">সংযোগভিত্তিক বহু-নেটওয়ার্ক ব্যালান্সিং। একত্রীকরণ স্ক্রিন এই ধারণা অনুসরণ করে; এর ডেস্কটপ ইঞ্জিন অন্তর্ভুক্ত নয়।</string>
+    <string name="credits_desc_netmerge_android">Wi-Fi + মোবাইল ডেটা ব্যালান্সিংয়ের Android ডেটা প্লেন রেফারেন্স। কোনো কোড অন্তর্ভুক্ত নেই।</string>
+    <string name="credits_desc_shizzi">Shizuku-এর মাধ্যমে রুটবিহীন হটস্পট শেয়ারিং। Cascade শুধু প্রকাশ্য অটোমেশন ব্রডকাস্ট দিয়ে এটি নিয়ন্ত্রণ করে; কোড কপি করা হয়নি।</string>
+    <string name="credits_desc_shizuku">Shizzi যে বিশেষ API ব্রিজ ব্যবহার করে।</string>
+    <string name="credits_desc_vpnhotspot">হটস্পটে VPN সংযোগ শেয়ার করার পূর্ববর্তী উদাহরণ।</string>
+    <string name="credits_desc_hotspotxray">রুটবিহীন হটস্পট গেটওয়ের অনুপ্রেরণা। এটি Cascade-এর সাথে সম্পর্কিত নয় এবং এর কোড ব্যবহার করা হয়নি।</string>
+    <string name="credits_desc_compose">অ্যাপের পেছনের UI টুলকিট।</string>
+    <string name="credits_desc_incy">আধুনিক Material You VPN ক্লায়েন্টের ভিজ্যুয়াল অনুপ্রেরণা। Cascade স্বাধীন এবং INCY-এর কোড, সম্পদ বা ব্র্যান্ড ব্যবহার করে না।</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>

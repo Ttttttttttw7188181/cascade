@@ -174,6 +174,7 @@ private fun HotspotScreen(viewModel: HotspotViewModel, onBackClick: () -> Unit) 
                 tokenMissing -> stringResource(R.string.hotspot_error_token)
                 state.lastError == "no_token" -> stringResource(R.string.hotspot_error_token)
                 state.lastError == "not_installed" -> stringResource(R.string.hotspot_error_install)
+                state.lastError == "timeout" -> stringResource(R.string.hotspot_error_timeout)
                 !state.lastError.isNullOrBlank() -> stringResource(R.string.hotspot_error_refused)
                 else -> null
             }
@@ -255,7 +256,7 @@ private fun HotspotScreen(viewModel: HotspotViewModel, onBackClick: () -> Unit) 
             )
             Spacer(Modifier.height(8.dp))
             TextButton(onClick = { Utils.openUri(context, AppConfig.SHIZZI_URL) }) {
-                Text("Shizzi · GitHub")
+                Text(stringResource(R.string.hotspot_shizzi_github))
             }
             NavigationBarsSpacer()
         }

@@ -628,6 +628,7 @@
     <string name="hotspot_error_token">Əvvəlcə Shizzi avtomatlaşdırma tokenini daxil edin</string>
     <string name="hotspot_error_install">Hotspot paylaşımı üçün Shizzi quraşdırın</string>
     <string name="hotspot_error_refused">Shizzi əmri rədd etdi. Tokeni və avtomatlaşdırma parametrlərini yoxlayın.</string>
+    <string name="hotspot_error_timeout">Shizzi cavab vermədi. Avtomatlaşdırmanın aktiv və fon fəaliyyətinə icazənin verildiyini yoxlayın.</string>
     <string name="hotspot_credits">Shizzi — carlelieser. Shizuku — RikkaApps. Cascade onların kodunu daxil etmir.</string>
     <string name="credits_title">Müəlliflər və təşəkkürlər</string>
     <string name="credits_intro">Cascade açıq mənbə layihələrinin işinə əsaslanır. Müəlliflərə və töhfə verənlərə təşəkkürlər.</string>
@@ -640,4 +641,17 @@
     <string name="settings_hotspot">VPN ilə hotspot</string>
     <string name="settings_hotspot_summary">Shizzi + Shizuku inteqrasiyası</string>
     <string name="about_credits">Müəlliflər və təşəkkürlər</string>
+    <string name="credits_desc_xray">Tuneli daşıyan proxy nüvəsi.</string>
+    <string name="credits_desc_v2rayng">Bu layihənin başladığı Android tətbiqi və interfeys əsası.</string>
+    <string name="credits_desc_libxray">Xray-i tətbiq daxilində işlətmək üçün libv2ray AAR-ı.</string>
+    <string name="credits_desc_hev">HEV rejimində istifadə olunan istifadəçi məkanı TUN/SOCKS5 tuneli.</string>
+    <string name="credits_desc_netmerge">Bağlantı üzrə çoxşəbəkə balanslaşdırması. Aqreqasiya ekranı bu konsepsiyaya əsaslanır; masaüstü mühərriki paketə daxil deyil.</string>
+    <string name="credits_desc_netmerge_android">Wi-Fi + mobil data balanslaşdırması üçün Android data müstəvisi referansı. Heç bir kod daxil edilməyib.</string>
+    <string name="credits_desc_shizzi">Shizuku vasitəsilə rootsuz hotspot paylaşımı. Cascade onu yalnız açıq avtomatlaşdırma yayımları ilə idarə edir; kod kopyalanmayıb.</string>
+    <string name="credits_desc_shizuku">Shizzi-nin istifadə etdiyi imtiyazlı API körpüsü.</string>
+    <string name="credits_desc_vpnhotspot">VPN bağlantısını hotspot vasitəsilə paylaşmağın əvvəlki nümunəsi.</string>
+    <string name="credits_desc_hotspotxray">Rootsuz hotspot şlüzü üçün ilham mənbəyi. Cascade ilə əlaqəsi yoxdur və kodu istifadə olunmur.</string>
+    <string name="credits_desc_compose">Tətbiqin arxasındakı UI alət dəsti.</string>
+    <string name="credits_desc_incy">Müasir Material You VPN klienti üçün vizual ilham. Cascade müstəqildir və INCY kodu, resursları və ya brendindən istifadə etmir.</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>

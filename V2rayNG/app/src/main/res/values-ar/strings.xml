@@ -635,6 +635,7 @@
     <string name="hotspot_error_token">أدخل رمز الأتمتة من Shizzi أولًا</string>
     <string name="hotspot_error_install">ثبّت Shizzi لاستخدام مشاركة نقطة الاتصال</string>
     <string name="hotspot_error_refused">رفض Shizzi الأمر. تحقق من الرمز وإعدادات الأتمتة.</string>
+    <string name="hotspot_error_timeout">لم يستجب Shizzi. تحقق من تفعيل الأتمتة والسماح بالنشاط في الخلفية.</string>
     <string name="hotspot_credits">Shizzi بواسطة carlelieser. Shizuku بواسطة RikkaApps. لا يتضمن Cascade شفرتهما.</string>
     <string name="credits_title">المؤلفون والشكر</string>
     <string name="credits_intro">Cascade مبني على عمل مشاريع مفتوحة المصدر. شكرًا لمؤلفيها ومساهميها.</string>
@@ -647,4 +648,17 @@
     <string name="settings_hotspot">نقطة اتصال مع VPN</string>
     <string name="settings_hotspot_summary">تكامل Shizzi + Shizuku</string>
     <string name="about_credits">المؤلفون والشكر</string>
+    <string name="credits_desc_xray">نواة الوكيل التي تحمل النفق.</string>
+    <string name="credits_desc_v2rayng">تطبيق Android وأساس الواجهة الذي بدأ منه هذا المشروع.</string>
+    <string name="credits_desc_libxray">مكتبة libv2ray AAR المستخدمة لتشغيل Xray داخل التطبيق.</string>
+    <string name="credits_desc_hev">نفق TUN/SOCKS5 في مساحة المستخدم المستخدم في وضع HEV.</string>
+    <string name="credits_desc_netmerge">موازنة شبكات متعددة لكل اتصال. تتبع شاشة التجميع فكرته؛ محرك سطح المكتب غير مضمّن.</string>
+    <string name="credits_desc_netmerge_android">مرجع مستوى بيانات Android لموازنة Wi-Fi وبيانات الجوال. لا يتضمن أي شفرة.</string>
+    <string name="credits_desc_shizzi">مشاركة نقطة الاتصال دون root عبر Shizuku. يتحكم Cascade به فقط عبر بث الأتمتة العام؛ لم تُنسخ أي شفرة.</string>
+    <string name="credits_desc_shizuku">جسر API المميز الذي يستخدمه Shizzi.</string>
+    <string name="credits_desc_vpnhotspot">سابقة لمشاركة اتصال VPN عبر نقطة الاتصال.</string>
+    <string name="credits_desc_hotspotxray">مصدر إلهام لبوابة نقطة اتصال دون root. غير مرتبط بـ Cascade ولا تُستخدم شفرته.</string>
+    <string name="credits_desc_compose">مجموعة أدوات الواجهة خلف التطبيق.</string>
+    <string name="credits_desc_incy">إلهام بصري لعميل VPN حديث بتصميم Material You. Cascade مستقل ولا يستخدم شفرة INCY أو أصوله أو علامته.</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>

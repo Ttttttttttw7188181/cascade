@@ -625,6 +625,7 @@
     <string name="hotspot_error_token">Nhập mã tự động hóa từ Shizzi trước</string>
     <string name="hotspot_error_install">Cài Shizzi để dùng chia sẻ điểm phát sóng</string>
     <string name="hotspot_error_refused">Shizzi từ chối lệnh. Kiểm tra mã và cài đặt tự động hóa.</string>
+    <string name="hotspot_error_timeout">Shizzi không phản hồi. Kiểm tra tự động hóa đã bật và hoạt động nền được cho phép.</string>
     <string name="hotspot_credits">Shizzi bởi carlelieser. Shizuku bởi RikkaApps. Cascade không bao gồm mã của họ.</string>
     <string name="credits_title">Tác giả và ghi công</string>
     <string name="credits_intro">Cascade dựa trên công việc của các dự án mã nguồn mở. Cảm ơn các tác giả và người đóng góp.</string>
@@ -637,4 +638,17 @@
     <string name="settings_hotspot">Điểm phát sóng với VPN</string>
     <string name="settings_hotspot_summary">Tích hợp Shizzi + Shizuku</string>
     <string name="about_credits">Tác giả và ghi công</string>
+    <string name="credits_desc_xray">Lõi proxy truyền tải đường hầm.</string>
+    <string name="credits_desc_v2rayng">Ứng dụng Android và nền tảng giao diện mà dự án này bắt đầu từ đó.</string>
+    <string name="credits_desc_libxray">AAR libv2ray dùng để chạy Xray trong ứng dụng.</string>
+    <string name="credits_desc_hev">Đường hầm TUN/SOCKS5 không gian người dùng dùng cho chế độ HEV.</string>
+    <string name="credits_desc_netmerge">Cân bằng nhiều mạng theo kết nối. Màn hình tổng hợp theo ý tưởng này; công cụ desktop của nó không được đóng gói.</string>
+    <string name="credits_desc_netmerge_android">Tham chiếu mặt phẳng dữ liệu Android cho cân bằng Wi-Fi + dữ liệu di động. Không có mã nào được đưa vào.</string>
+    <string name="credits_desc_shizzi">Chia sẻ điểm phát sóng không cần root qua Shizuku. Cascade chỉ điều khiển nó qua quảng bá tự động hóa công khai; không sao chép mã.</string>
+    <string name="credits_desc_shizuku">Cầu API đặc quyền được Shizzi sử dụng.</string>
+    <string name="credits_desc_vpnhotspot">Tiền lệ cho việc chia sẻ kết nối VPN qua điểm phát sóng.</string>
+    <string name="credits_desc_hotspotxray">Nguồn cảm hứng cho cổng phát sóng không cần root. Không liên kết với Cascade và không dùng mã.</string>
+    <string name="credits_desc_compose">Bộ công cụ giao diện phía sau ứng dụng.</string>
+    <string name="credits_desc_incy">Cảm hứng thị giác cho ứng dụng VPN Material You hiện đại. Cascade độc lập và không dùng mã, tài nguyên hay thương hiệu INCY.</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>

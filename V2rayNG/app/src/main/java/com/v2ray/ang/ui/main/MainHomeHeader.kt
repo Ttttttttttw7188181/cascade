@@ -302,9 +302,8 @@ private fun HeroCard(
                     Box(contentAlignment = Alignment.Center) {
                         Icon(
                             painter = painterResource(R.drawable.ic_power_24dp),
-                            contentDescription = stringResource(
-                                if (isRunning) R.string.acc_stop else R.string.acc_start
-                            ),
+                            // The whole card is the button; its onClickLabel names the action.
+                            contentDescription = null,
                             tint = if (isRunning) colors.primary else colors.onPrimary,
                             modifier = Modifier.size(30.dp)
                         )

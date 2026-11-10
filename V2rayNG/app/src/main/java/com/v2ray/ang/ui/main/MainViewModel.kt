@@ -122,6 +122,7 @@ class MainViewModel(
     private var setupGroupJob: Job? = null
     private var preloadJob: Job? = null
     private var selectedGroupLoadJob: Job? = null
+    private var selectedNameJob: Job? = null
     private var reloadJob: Job? = null
     private var testResultFlushJob: Job? = null
     private val pendingTestResults = linkedMapOf<String, Long>()
@@ -156,7 +157,8 @@ class MainViewModel(
             _selectedServerName.value = null
             return
         }
-        viewModelScope.launch(ioDispatcher) {
+        selectedNameJob?.cancel()
+        selectedNameJob = viewModelScope.launch(ioDispatcher) {
             val name = dataSource.decodeServerConfig(guid)?.let { profile ->
                 profile.remarks.takeIf { it.isNotBlank() } ?: profile.server
             }
@@ -1006,6 +1008,7 @@ class MainViewModel(
         setupGroupJob?.cancel()
         preloadJob?.cancel()
         selectedGroupLoadJob?.cancel()
+        selectedNameJob?.cancel()
         reloadJob?.cancel()
         filterJob?.cancel()
         cancelAllPing()

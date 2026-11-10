@@ -8,10 +8,16 @@ import android.content.IntentFilter
 import androidx.core.content.ContextCompat
 import com.v2ray.ang.AppConfig
 import com.v2ray.ang.handler.MmkvManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 /**
  * Small bridge to the Shizzi app (https://github.com/carlelieser/shizzi).
@@ -47,9 +53,16 @@ object ShizziController {
     private var refCount = 0
     private var receiverRegistered = false
 
+    // Shizzi answers with a broadcast, which can be lost if the app is killed or the
+    // command is dropped. Without a deadline the toggle would stay disabled forever.
+    private val timeoutScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private var pendingJob: Job? = null
+
     private val resultReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             val safeIntent = intent ?: return
+            pendingJob?.cancel()
+            pendingJob = null
             val accepted = safeIntent.getBooleanExtra("accepted", true)
             val refusal = safeIntent.getStringExtra("refusal")
             val error = safeIntent.getStringExtra("error")
@@ -103,7 +116,7 @@ object ShizziController {
         val installed = isInstalled(context)
         val token = MmkvManager.decodeSettingsString(AppConfig.PREF_SHIZZI_TOKEN, "").orEmpty()
         _state.update { it.copy(installed = installed, token = token) }
-        if (installed && token.isNotBlank()) {
+        if (installed && token.isNotBlank() && !_state.value.pending) {
             send(AppConfig.SHIZZI_ACTION_QUERY_STATUS, pending = false)
         }
     }
@@ -111,7 +124,7 @@ object ShizziController {
     fun saveToken(token: String) {
         MmkvManager.encodeSettings(AppConfig.PREF_SHIZZI_TOKEN, token.trim())
         _state.update { it.copy(token = token.trim(), lastError = null) }
-        if (token.isNotBlank()) {
+        if (token.isNotBlank() && !_state.value.pending) {
             send(AppConfig.SHIZZI_ACTION_QUERY_STATUS, pending = false)
         }
     }
@@ -145,7 +158,14 @@ object ShizziController {
         runCatching { context.sendBroadcast(intent) }
             .onFailure { _state.update { state -> state.copy(lastError = it.message) } }
         if (pending) {
+            pendingJob?.cancel()
             _state.update { it.copy(pending = true, lastError = null) }
+            pendingJob = timeoutScope.launch {
+                delay(PENDING_TIMEOUT_MS)
+                _state.update { state ->
+                    if (state.pending) state.copy(pending = false, lastError = "timeout") else state
+                }
+            }
         }
     }
 
@@ -155,4 +175,6 @@ object ShizziController {
     } catch (_: Exception) {
         false
     }
+
+    private const val PENDING_TIMEOUT_MS = 12_000L
 }

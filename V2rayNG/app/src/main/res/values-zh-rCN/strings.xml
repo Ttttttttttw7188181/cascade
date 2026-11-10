@@ -625,6 +625,7 @@
     <string name="hotspot_error_token">请先输入 Shizzi 的自动化令牌</string>
     <string name="hotspot_error_install">安装 Shizzi 才能使用热点共享</string>
     <string name="hotspot_error_refused">Shizzi 拒绝了命令。请检查令牌和自动化设置。</string>
+    <string name="hotspot_error_timeout">Shizzi 没有响应。请检查自动化已启用并允许后台活动。</string>
     <string name="hotspot_credits">Shizzi 作者 carlelieser。Shizuku 作者 RikkaApps。Cascade 不包含它们的代码。</string>
     <string name="credits_title">作者与致谢</string>
     <string name="credits_intro">Cascade 建立在开源项目之上。感谢所有作者和贡献者。</string>
@@ -637,4 +638,17 @@
     <string name="settings_hotspot">带 VPN 的热点</string>
     <string name="settings_hotspot_summary">Shizzi + Shizuku 集成</string>
     <string name="about_credits">作者与致谢</string>
+    <string name="credits_desc_xray">承载隧道的代理核心。</string>
+    <string name="credits_desc_v2rayng">本项目起步所基于的 Android 客户端与界面基础。</string>
+    <string name="credits_desc_libxray">用于在应用内运行 Xray 的 libv2ray AAR。</string>
+    <string name="credits_desc_hev">HEV 模式使用的用户态 TUN/SOCKS5 隧道。</string>
+    <string name="credits_desc_netmerge">按连接的多网络均衡。聚合界面沿用其思路；未捆绑其桌面引擎。</string>
+    <string name="credits_desc_netmerge_android">Wi-Fi + 移动数据均衡的 Android 数据平面参考。未包含任何代码。</string>
+    <string name="credits_desc_shizzi">通过 Shizuku 实现免 root 的热点分享。Cascade 仅通过公开自动化广播控制它；未复制代码。</string>
+    <string name="credits_desc_shizuku">Shizzi 使用的特权 API 桥。</string>
+    <string name="credits_desc_vpnhotspot">通过热点共享 VPN 连接的先行实现。</string>
+    <string name="credits_desc_hotspotxray">免 root 热点网关的灵感来源。它与 Cascade 无关，未使用其代码。</string>
+    <string name="credits_desc_compose">界面背后的 UI 工具包。</string>
+    <string name="credits_desc_incy">现代 Material You VPN 客户端的视觉灵感。Cascade 独立开发，不使用 INCY 的代码、资源或品牌。</string>
+    <string name="hotspot_shizzi_github">Shizzi · GitHub</string>
 </resources>
