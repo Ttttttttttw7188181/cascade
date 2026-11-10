@@ -1,0 +1,77 @@
+name: Build Cascade APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v6.1.0
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          log-accepted-android-sdk-licenses: false
+          cmdline-tools-version: '14742923'
+          packages: 'platforms;android-37.0 build-tools;37.0.0 platform-tools'
+
+      # Native inputs are pinned to the exact upstream versions used by
+      # v2rayNG 2.3.15. They are downloaded instead of built with the NDK so
+      # the fork does not need git submodules or a multi-gigabyte native setup.
+      - name: Fetch prebuilt Xray core (libv2ray.aar)
+        run: |
+          mkdir -p V2rayNG/app/libs
+          curl -fL --retry 3 --retry-delay 2 \
+            -o V2rayNG/app/libs/libv2ray.aar \
+            https://github.com/2dust/AndroidLibXrayLite/releases/download/v26.10.31/libv2ray.aar
+
+      - name: Fetch HEV tun native libs
+        run: |
+          curl -fL --retry 3 --retry-delay 2 \
+            -o /tmp/v2rayng.apk \
+            https://github.com/2dust/v2rayNG/releases/download/2.3.15/v2rayNG_2.3.15_universal.apk
+          for abi in arm64-v8a armeabi-v7a x86 x86_64; do
+            mkdir -p "V2rayNG/app/libs/$abi"
+            unzip -j /tmp/v2rayng.apk \
+              "lib/$abi/libhev-socks5-tunnel.so" \
+              "lib/$abi/libhevsockstun.so" \
+              -d "V2rayNG/app/libs/$abi"
+          done
+
+      - name: Verify native inputs
+        run: |
+          test -f V2rayNG/app/libs/libv2ray.aar
+          unzip -l V2rayNG/app/libs/libv2ray.aar | grep -q 'jni/arm64-v8a/libgojni.so'
+          for abi in arm64-v8a armeabi-v7a x86 x86_64; do
+            test -f "V2rayNG/app/libs/$abi/libhev-socks5-tunnel.so"
+            test -f "V2rayNG/app/libs/$abi/libhevsockstun.so"
+          done
+
+      - name: Build debug APKs
+        working-directory: V2rayNG
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          chmod +x gradlew
+          ./gradlew assemblePlaystoreDebug --stacktrace
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v7
+        with:
+          name: Cascade-0.1.0-debug
+          path: V2rayNG/app/build/outputs/apk/playstore/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
