@@ -122,6 +122,8 @@ class CascadeViewModel(application: Application) : AndroidViewModel(application)
         if (reload) reloadIfActive()
     }
 
+    fun updateSettings(transform: (AppSettings) -> AppSettings) = updateSettings(transform, reload = false)
+
     fun addSubscription(name: String, url: String) {
         val subscription = CascadeStore.addSubscription(name, url)
         viewModelScope.launch {

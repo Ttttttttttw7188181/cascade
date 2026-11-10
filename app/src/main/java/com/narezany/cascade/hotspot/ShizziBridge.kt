@@ -168,7 +168,7 @@ object ShizziBridge {
                 putExtra("token", state.token)
             }
             runCatching { ctx.sendBroadcast(intent) }
-                .onFailure { _state.update { it.copy(error = it.message.orEmpty(), pending = false) } }
+                .onFailure { failure -> _state.update { it.copy(error = failure.message.orEmpty(), pending = false) } }
         }
         if (pending) {
             timeoutJob?.cancel()

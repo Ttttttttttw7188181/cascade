@@ -38,13 +38,13 @@ class XrayConfigBuilder(
             if (children.isEmpty()) error("В группе нет доступных серверов")
             children.forEachIndexed { index, child ->
                 val tags = buildChain(child, "g$index", outbounds, leafTags)
-                entryTags += tags.first
-                mainEntry = mainEntry.ifBlank { tags.first }
+                entryTags += tags.first()
+                mainEntry = mainEntry.ifBlank { tags.first() }
             }
         } else {
             val tags = buildChain(selected, "proxy", outbounds, leafTags)
-            entryTags += tags.first
-            mainEntry = tags.first
+            entryTags += tags.first()
+            mainEntry = tags.first()
         }
 
         if (settings.aggregationEnabled) {

@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Block
 import androidx.compose.material.icons.rounded.Dns
 import androidx.compose.material.icons.rounded.Lan
-import androidx.compose.material.icons.rounded.Mux
+import androidx.compose.material.icons.rounded.Layers
 import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -177,7 +177,7 @@ fun RoutingScreen(vm: CascadeViewModel, onBack: () -> Unit) {
             )
             Spacer(Modifier.height(8.dp))
             SwitchRow(
-                icon = Icons.Rounded.Mux,
+                icon = Icons.Rounded.Layers,
                 title = "Mux",
                 subtitle = "Несколько соединений через один поток (если сервер поддерживает)",
                 checked = settings.mux,
