@@ -6,7 +6,7 @@ on:
     branches: [ main, master ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -61,6 +61,13 @@ jobs:
             test -f "V2rayNG/app/libs/$abi/libhevsockstun.so"
           done
 
+      - name: Run unit tests
+        working-directory: V2rayNG
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          chmod +x gradlew
+          ./gradlew :app:testPlaystoreDebugUnitTest --stacktrace
+
       - name: Build debug APKs
         working-directory: V2rayNG
         run: |
@@ -75,3 +82,19 @@ jobs:
           path: V2rayNG/app/build/outputs/apk/playstore/debug/*.apk
           if-no-files-found: error
           retention-days: 30
+
+      # The full multi-ABI artifact is large and slow to download. Publish the
+      # arm64 split as a prerelease asset so a phone can fetch only what it needs.
+      - name: Publish arm64 test build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view ci-arm64 >/dev/null 2>&1 || \
+            gh release create ci-arm64 \
+              --prerelease \
+              --target "$GITHUB_SHA" \
+              --title "CI arm64 build" \
+              --notes "Automated debug build for device testing."
+          gh release upload ci-arm64 \
+            V2rayNG/app/build/outputs/apk/playstore/debug/Cascade_0.1.0_arm64-v8a.apk \
+            --clobber
