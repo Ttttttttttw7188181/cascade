@@ -54,9 +54,9 @@ object NotificationManager {
         if (speedNotificationJob != null || CoreServiceManager.isRunning() == false) return
 
         var lastZeroSpeed = false
-        sessionStartTime = System.currentTimeMillis()
-        sessionUp = 0L
-        sessionDown = 0L
+        if (sessionStartTime == 0L) {
+            sessionStartTime = System.currentTimeMillis()
+        }
 
         speedNotificationJob = CoroutineScope(Dispatchers.IO).launch {
             while (isActive) {
@@ -146,6 +146,13 @@ object NotificationManager {
         speedNotificationJob?.cancel()
         speedNotificationJob = null
         mNotificationManager = null
+    }
+
+    /** Resets the counters for a new tunnel session. */
+    fun resetSession() {
+        sessionStartTime = System.currentTimeMillis()
+        sessionUp = 0L
+        sessionDown = 0L
     }
 
     /**

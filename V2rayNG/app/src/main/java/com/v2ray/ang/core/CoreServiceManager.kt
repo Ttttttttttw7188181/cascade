@@ -189,6 +189,7 @@ object CoreServiceManager {
 
         if (!isReload) {
             MessageHelper.sendMsg2UI(service, AppConfig.MSG_STATE_START_SUCCESS, "")
+            NotificationManager.resetSession()
         }
         NotificationManager.startSpeedNotification()
         LogUtil.i(AppConfig.TAG, "StartCore-Manager: Core started successfully")
